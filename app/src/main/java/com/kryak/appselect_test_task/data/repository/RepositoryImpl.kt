@@ -12,14 +12,13 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val api: NYTApi
-): ReviewRepository {
+) : ReviewRepository {
     override fun getReviewList(): Flow<PagingData<Result>> {
         return Pager(
             PagingConfig(
                 pageSize = 20
-            )
-        ) {
-            ReviewsPagingSource(api)
-        }.flow
+            ),
+            pagingSourceFactory = { ReviewsPagingSource(api) }
+        ).flow
     }
 }
